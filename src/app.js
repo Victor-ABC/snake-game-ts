@@ -24,25 +24,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = require("./db");
-// const path = require("path");
-// const bodyParser = require("body-parser");
 const path = __importStar(require("path"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 let port = 3000;
-let app = express_1.default();
-app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.use(body_parser_1.default.json());
-app.use(express_1.default.static(path.join(__dirname, "public")));
-app.get("/", (req, res) => {
-    res.send();
-});
-function startServer() {
+function startApp() {
+    let app = express_1.default();
+    app.use(body_parser_1.default.urlencoded({ extended: true }));
+    app.use(body_parser_1.default.json());
+    app.use(cookie_parser_1.default());
+    app.use("/", function (req, res, next) {
+        if (req.cookies.myCookie === undefined) {
+            res.cookie("myCookie", 12);
+        }
+        else {
+            console.log("is logged in");
+        }
+        next(); // <-- important!
+    });
+    app.use(express_1.default.static(path.join(__dirname, "public")));
+    app.get("/", (req, res) => {
+        res.send();
+    });
     app.listen(port, () => {
         console.log(`Listening on port: ${port}`);
     });
 }
 ;
-startServer();
+startApp();
 db_1.con.query("select * from users", function (err, result) {
     if (err)
         throw err;
@@ -50,3 +59,4 @@ db_1.con.query("select * from users", function (err, result) {
         console.log(result[0].name);
     }
 });
+db_1.con.end();

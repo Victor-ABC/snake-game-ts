@@ -1,37 +1,41 @@
-import express , { Express as ExpressType} from "express"; 
-import {con} from "./db";
-
-// const path = require("path");
-// const bodyParser = require("body-parser");
+import express , { Express } from "express"; 
+import {con as connection} from "./db";
 import * as path from "path";
 import bodyParser from 'body-parser';
+import cookieParser from "cookie-parser";
 
 let port = 3000;
-let app : ExpressType = express();
 
+function startApp () {
+  let app : Express = express();
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(cookieParser())
+  app.use("/", function (req, res, next) {
+    if(req.cookies.myCookie === undefined){
+      res.cookie("myCookie", 12);
+    }
+    else {
+      console.log("is logged in");
+    }
+    next(); // <-- important!
+  });
+  app.use(express.static(path.join(__dirname, "public")));
 
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
-
-
-app.get("/", (req, res) => {
-  res.send();
-});
-
-
-function startServer() {
+  app.get("/", (req, res) => {
+    res.send();
+  });
   app.listen(port, () => {
     console.log(`Listening on port: ${port}`);
   });
 };
 
-startServer();
+startApp();
 
-con.query("select * from users", function (err, result) {
+connection.query("select * from users", (err, result) => {
   if (err) throw err;
   else {
     console.log(result[0].name);
   }
 });
+connection.end();

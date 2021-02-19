@@ -6,8 +6,7 @@
     <loginData>
         <host>localhost</host>
         <user>root</user>
-        <password>a345snake
+        <password>a345snake</password>
         <database>snakeGame</database>
-        </password>
     </loginData>
 </snake>
