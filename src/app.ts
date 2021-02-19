@@ -1,4 +1,6 @@
 import express , { Express as ExpressType} from "express"; 
+import {con} from "./db";
+
 // const path = require("path");
 // const bodyParser = require("body-parser");
 import * as path from "path";
@@ -26,3 +28,10 @@ function startServer() {
 };
 
 startServer();
+
+con.query("select * from users", function (err, result) {
+  if (err) throw err;
+  else {
+    console.log(result[0].name);
+  }
+});

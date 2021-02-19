@@ -23,6 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const db_1 = require("./db");
 // const path = require("path");
 // const bodyParser = require("body-parser");
 const path = __importStar(require("path"));
@@ -42,3 +43,10 @@ function startServer() {
 }
 ;
 startServer();
+db_1.con.query("select * from users", function (err, result) {
+    if (err)
+        throw err;
+    else {
+        console.log(result[0].name);
+    }
+});
