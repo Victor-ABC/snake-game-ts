@@ -1,6 +1,8 @@
 import express , { Express as ExpressType} from "express"; 
-const path = require("path");
-const bodyParser = require("body-parser");
+// const path = require("path");
+// const bodyParser = require("body-parser");
+import * as path from "path";
+import bodyParser from 'body-parser';
 
 let port = 3000;
 let app : ExpressType = express();
