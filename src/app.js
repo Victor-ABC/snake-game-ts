@@ -33,15 +33,6 @@ function startApp() {
     app.use(body_parser_1.default.urlencoded({ extended: true }));
     app.use(body_parser_1.default.json());
     app.use(cookie_parser_1.default());
-    app.use("/", function (req, res, next) {
-        if (req.cookies.myCookie === undefined) {
-            res.cookie("myCookie", 12);
-        }
-        else {
-            console.log("is logged in");
-        }
-        next(); // <-- important!
-    });
     app.use(express_1.default.static(path.join(__dirname, "public")));
     app.get("/", (req, res) => {
         res.send();
@@ -50,9 +41,8 @@ function startApp() {
         console.log(`Listening on port: ${port}`);
     });
 }
-;
 startApp();
-db_1.con.query("select * from users", function (err, result) {
+db_1.con.query("select * from users", (err, result) => {
     if (err)
         throw err;
     else {
