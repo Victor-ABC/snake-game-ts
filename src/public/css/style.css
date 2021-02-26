@@ -5,6 +5,13 @@
   --coin: #cccc00;
   --coin-style: #ffff00;
 }
+.users {
+  border: var(--fg-1) 5 px solid;
+  margin-top: 76px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: left;
+}
 
 html,
 body {
@@ -78,12 +85,10 @@ header > span {
 canvas {
   display: block;
   border: 1px solid var(--fg-1);
-
 }
 .unterCanvas {
-    padding: 8px;
+  padding: 8px;
 }
-
 
 :not(button) {
   cursor: default;

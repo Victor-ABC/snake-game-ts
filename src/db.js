@@ -10,11 +10,12 @@ var con = mysql_1.default.createConnection({
     user: "root",
     password: "a345snake",
     insecureAuth: true,
-    database: "snakeGame"
+    database: "snakeGame",
 });
 exports.con = con;
 con.connect(function (err) {
     if (err)
         throw err;
-    console.log("Connected!");
+    console.log("Connected to Database");
+    console.log("----------------------");
 });

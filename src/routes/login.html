@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>Loginformular</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div id="users sign-in">
+      <h1>Anmelden</h1>
+      <form action="/users/login" method="post">
+        <div class="form-group">
+          <label for="name" class="control-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            autofocus="autofocus"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password" class="control-label">Passwort</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Anmelden</button>
+      </form>
+    </div>
+  </body>
+</html>

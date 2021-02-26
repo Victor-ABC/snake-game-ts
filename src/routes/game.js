@@ -23,31 +23,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const jwt = __importStar(require("jsonwebtoken"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const users_1 = __importDefault(require("./routes/users"));
-const game_1 = __importDefault(require("./routes/game"));
-let port = 3000;
-let app = express_1.default();
-app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.use(body_parser_1.default.json());
-app.use(cookie_parser_1.default());
-app.use(express_1.default.static(path.join(__dirname, "public")));
-app.use("/users", users_1.default);
-app.use((req, res, next) => {
-    // token verify
-    const token = req.cookies["jwt-token"] || "";
-    try {
-        res.locals.user = jwt.verify(token, "mysecret");
-        next();
-    }
-    catch (error) {
-        res.redirect("/users/login");
-    }
+const router = express_1.default.Router();
+router.get("/", (req, res) => {
+    fs.readFile(path.join(__dirname, "..", "public/index.html"), "utf-8", (err, data) => {
+        if (!err) {
+            res.send(data);
+        }
+        else {
+            res.send(err);
+        }
+    });
 });
-app.use("/game", game_1.default);
-app.listen(port, () => {
-    console.log(`Listening on port: ${port}`);
-});
+exports.default = router;

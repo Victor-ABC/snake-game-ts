@@ -12,13 +12,14 @@
     <header id="headerId">
       <button id="start">Start</button>
       <button id="name">Spieler-Name</button>
+      <button id="logout" onclick="signout()">logout</button>
       <h1 id="playerId">Player</h1>
     </header>
     <hr id="hr" />
     <div id="gameField">
-          <canvas class="canvas tile" width="300" height="300"></canvas>
-          <div class="unterCanvas" id="score">Score: 0</div>
-          <div class="unterCanvas" id="HighScore">HighScore: 0</div>
+      <canvas class="canvas tile" width="300" height="300"></canvas>
+      <div class="unterCanvas" id="score">Score: 0</div>
+      <div class="unterCanvas" id="HighScore">HighScore: 0</div>
     </div>
   </body>
   <script src="../ts/events.js" defer></script>

@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Loginformular</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="users sign-up"></div>
+      <h1>Konto erstellen</h1>
+      <form action="/users/register" method="post">
+        <div class="form-group">
+          <label for="name" class="control-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            autofocus="autofocus"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password" class="control-label">Passwort</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+          />
+        </div>
+        <div class="form-group">
+          <label for="passwordCheck" class="control-label"
+            >Passwort wiederholen</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="passwordCheck"
+            name="passwordCheck"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Konto erstellen</button>
+      </form>
+    </div>
+  </body>
+</html>

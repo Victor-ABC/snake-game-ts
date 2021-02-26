@@ -1,17 +1,17 @@
 import mysql from "mysql";
 
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "a345snake",
+  insecureAuth: true,
+  database: "snakeGame",
+});
 
-    var con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "a345snake",
-      insecureAuth : true,
-      database: "snakeGame"
-    });
+con.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected to Database");
+  console.log("----------------------");
+});
 
-con.connect(function(err) {
-      if (err) throw err;
-      console.log("Connected!");
-    });
-    
-export { con };
+export { con }; //funktioniert sehr gut
