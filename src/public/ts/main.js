@@ -35,7 +35,7 @@ var snake;
 var fruit;
 var i;
 var snakeMusic;
-var playerName = "player";
+
 function setUp() {
   if (!isOn) {
     isOn = true;
@@ -72,5 +72,5 @@ function setUp() {
 
 function updateScore(newNr) {
   this.score += newNr;
-  document.getElementById("score").textContent = `Score : ${this.score}`;
+  document.getElementById("score").textContent = this.score;
 }

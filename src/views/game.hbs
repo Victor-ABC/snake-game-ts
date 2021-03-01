@@ -4,14 +4,14 @@
     <header id="headerId">
       <button id="start">Start</button>
       <button id="logout" onclick="signout()">logout</button>
-      <h1 id="playerId">Player</h1>
+      <h1 id="playerId">{{player}}</h1>
     </header>
     <hr id="hr" />
     <div id="gameField">
       <canvas class="canvas tile" width="300" height="300"></canvas>
-      <div class="unterCanvas" id="score">0</div>
-      <div class="unterCanvas" id="HighScore">{{highscore}}</div>
     </div>
+    <p>Score: <div class="unterCanvas" id="score">0</div></p>
+      <p>HighScore: <div class="unterCanvas" id="HighScore">{{highscore}}</div></p>
     <script src="../ts/events.js" defer></script>
     <script src="../ts/fruit.js"></script>
     <script src="../ts/snake.js"></script>

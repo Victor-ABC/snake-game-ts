@@ -24,9 +24,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const jwt = __importStar(require("jsonwebtoken"));
+const db_1 = require("../db");
 const router = express_1.default.Router();
 router.get("/", (req, res) => {
     let claimsSet = jwt.verify(req.cookies["jwt-token"], "mysecret");
-    res.render("game", { highscore: claimsSet["highscore"] });
+    res.render("game", {
+        highscore: claimsSet["highscore"],
+        player: claimsSet["name"],
+    });
+});
+router.post("/", (req, res) => {
+    db_1.con.query(`update users set highscore=${req.body.highscore} where username like "${req.body.name}";`, (err, data) => {
+        if (!err) {
+            console.log(`User: ${req.body.name} has a new highscore(${req.body.highscore})`);
+            res.status(201).send();
+        }
+        else {
+            console.log(`Error, User: ${req.body.name} with new highscore(${req.body.highscore}) coult not been updated`);
+        }
+    });
 });
 exports.default = router;
