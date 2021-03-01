@@ -1,17 +1,30 @@
 <audio></audio>
     <hr />
-    <h1 id="Snake">Snake</h1>
+    <h1 id="Snake">Snake Game</h1>
+        <p>Score: <div class="unterCanvas" id="score">0</div></p>
+    <p>HighScore: <div class="unterCanvas" id="HighScore">{{highscore}}</div></p>
     <header id="headerId">
       <button id="start">Start</button>
-      <button id="logout" onclick="signout()">logout</button>
+      <button id="logout" onclick="signout()">Logout</button>
+      <button id="weltListeButton">Weltrangliste anzeigen</button>
+      <button id="shop">Shop</button>
       <h1 id="playerId">{{player}}</h1>
     </header>
     <hr id="hr" />
     <div id="gameField">
       <canvas class="canvas tile" width="300" height="300"></canvas>
     </div>
-    <p>Score: <div class="unterCanvas" id="score">0</div></p>
-      <p>HighScore: <div class="unterCanvas" id="HighScore">{{highscore}}</div></p>
+    <table id="weltScoreBoard">
+      <thead>
+        <tr><th id="tableScore">Score</th><th id="tableName">Name</th></tr>
+      </thead>
+       <caption>Weltrangliste</caption>
+      <tbody>
+        {{#each champion}}
+          <tr><td>{{score}}</td><td>{{name}}</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
     <script type="text/javascript" src="../js/events.js" defer></script>
     <script type="text/javascript" src="../js/fruit.js"></script>
     <script type="text/javascript" src="../js/snake.js"></script>

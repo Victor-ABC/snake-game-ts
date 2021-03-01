@@ -138,6 +138,10 @@ function printGameOver() {
   this.snakeMusic.pause();
   this.deadSound = new Audio("../media/snakeDead.wav");
   this.deadSound.play();
+  //Weltrangliste
+  setTimeout(() => {
+    location.reload();
+  }, 3000);
 }
 
 function updateHighscoreInDatabase(newHighscore) {

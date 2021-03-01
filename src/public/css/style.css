@@ -12,7 +12,11 @@
   flex-flow: row nowrap;
   justify-content: left;
 }
-
+body p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+}
 html,
 body {
   height: 100%;
@@ -89,6 +93,9 @@ canvas {
 .unterCanvas {
   padding: 8px;
 }
+#weltrangId {
+  margin: 5px;
+}
 
 :not(button) {
   cursor: default;
@@ -120,7 +127,26 @@ table,
 th,
 td {
   border: 1px solid var(--fg-1);
-
+  width: 300px;
   margin: 10px;
   padding: 10px;
+}
+#tableScore {
+  width: 20%;
+}
+body tbody tr:first-child {
+  background-color: gold;
+  color: black;
+}
+body tbody tr:nth-child(2) {
+  background-color: silver;
+  color: black;
+}
+body tbody tr:nth-child(3) {
+  background-color: #bf8970;
+  color: black;
+}
+body tbody tr:nth-child(3) ~ tr {
+  background-color: white;
+  color: black;
 }

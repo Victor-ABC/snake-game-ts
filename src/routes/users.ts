@@ -14,19 +14,16 @@ router.post("/login", (req, res) => {
 
   connection.query(
     `select * from users where username like "${req.body.name}";`,
-    (err, data) => {
+    (err, resultset) => {
       if (!err) {
-        if (data[0] != undefined) {
-          console.log(req.body.password);
-          console.log(data[0].passwort);
+        if (resultset[0] != undefined) {
           bcrypt.compare(
             req.body.password,
-            data[0].passwort,
+            resultset[0].passwort,
             (err, isValid) => {
               if (isValid) {
-                let userHighscore = data[0].highscore;
+                let userHighscore = resultset[0].highscore;
                 let claimsSet = {
-                  iat: 1475232583813,
                   name: `${req.body.name}`,
                   highscore: userHighscore,
                 };

@@ -28,9 +28,14 @@ const db_1 = require("../db");
 const router = express_1.default.Router();
 router.get("/", (req, res) => {
     let claimsSet = jwt.verify(req.cookies["jwt-token"], "mysecret");
-    res.render("game", {
-        highscore: claimsSet["highscore"],
-        player: claimsSet["name"],
+    db_1.con.query("select username as name, highscore as score from users order by highscore desc limit 10;", (err, resultset) => {
+        if (!err) {
+            res.render("game", {
+                highscore: claimsSet["highscore"],
+                player: claimsSet["name"],
+                champion: resultset,
+            });
+        }
     });
 });
 router.post("/", (req, res) => {

@@ -42,7 +42,14 @@ function signout() {
   };
   request.send();
 }
-
-function relocateLogin() {
-  location.href = "http://localhost:3000/users/login";
-}
+//Weltrangliste Aus/An
+let isVisible = true;
+document.getElementById("weltListeButton").onclick = () => {
+  if (isVisible) {
+    document.getElementById("weltScoreBoard").style.visibility = "hidden";
+    isVisible = !isVisible;
+  } else {
+    document.getElementById("weltScoreBoard").style.visibility = "visible";
+    isVisible = !isVisible;
+  }
+};
