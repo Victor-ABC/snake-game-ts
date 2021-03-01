@@ -1,0 +1,13 @@
+<h1>Shop</h1>
+<img src="media/tresure.png" alt="tresure" width="200" height="200">
+<p>Herzlich Willkommen {{name}}</p>
+<header style="text-align: left; margin: 20px; padding: 5px">
+    <button id="backToTheGame">Zurück zum Spiel</button>
+    <img src="media/coin.jpg" alt="coinPicture" width="20" height="20">
+    <p style="float: inline-start;">{{coins}} Coins</p>
+</header>
+<script defer>
+    document.getElementById("backToTheGame").onclick = () => {
+        location.href = "http://localhost:3000/game";
+    }
+</script>

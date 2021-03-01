@@ -116,6 +116,7 @@ function printGameOver() {
     document.getElementById("HighScore").textContent = highScore;
     updateHighscoreInDatabase(highScore);
   }
+  updateCoins(score);
   isOn = false;
   score = 0;
   document.getElementById("score").textContent = score;
@@ -150,15 +151,13 @@ function updateHighscoreInDatabase(newHighscore) {
   let request = new XMLHttpRequest();
   request.open("POST", "http://localhost:3000/game", true);
   request.setRequestHeader("Content-Type", "application/json");
-  request.onload = (event) => {
-    if (request.status === 201) {
-      console.log("Success");
-    } else {
-      console.log("Status: " + request.status + " " + request.statusText);
-    }
-  };
-  request.onerror = (event) => {
-    console.error("Es ist ein Fehler aufgetreten");
-  };
+  request.send(JSON.stringify(data));
+}
+function updateCoins(coins) {
+  const user = document.getElementById("playerId").textContent;
+  let data = { name: user, coins: coins };
+  let request = new XMLHttpRequest();
+  request.open("POST", "http://localhost:3000/shop/addcoins", true);
+  request.setRequestHeader("Content-Type", "application/json");
   request.send(JSON.stringify(data));
 }

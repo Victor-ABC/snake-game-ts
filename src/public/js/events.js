@@ -53,3 +53,7 @@ document.getElementById("weltListeButton").onclick = () => {
     isVisible = !isVisible;
   }
 };
+//Shop
+document.getElementById("shop").onclick = () => {
+  location.href = "http://localhost:3000/shop";
+};
