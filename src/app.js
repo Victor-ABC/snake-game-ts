@@ -30,8 +30,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const users_1 = __importDefault(require("./routes/users"));
 const game_1 = __importDefault(require("./routes/game"));
-let port = 3000;
-let app = express_1.default();
+const port = 3000;
+const app = express_1.default();
 const engineConfig = {
     extname: ".hbs",
     layoutsDir: path.join(__dirname, "views", "layouts"),

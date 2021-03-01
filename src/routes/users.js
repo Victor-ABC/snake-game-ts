@@ -23,34 +23,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-// import * as bcrypt from "bcryptjs";
+const bcrypt = __importStar(require("bcryptjs"));
 const jwt = __importStar(require("jsonwebtoken"));
 const db_1 = require("../db");
+const cost = 10;
 const router = express_1.default.Router();
 router.get("/login", (req, res) => {
     res.render("login");
 });
 router.post("/login", (req, res) => {
     res.clearCookie("jwt-token");
-    let searchQuery = `select * from users where username like "${req.body.name}" AND passwort like "${req.body.password}";`;
-    db_1.con.query(searchQuery, (err, data) => {
+    db_1.con.query(`select * from users where username like "${req.body.name}";`, (err, data) => {
         if (!err) {
             if (data[0] != undefined) {
-                let userHighscore = data[0].highscore;
-                let claimsSet = {
-                    iat: 1475232583813,
-                    name: `${req.body.name}`,
-                    highscore: userHighscore,
-                };
-                let token = jwt.sign(claimsSet, "mysecret", {
-                    algorithm: "HS256",
-                    expiresIn: "1h",
+                console.log(req.body.password);
+                console.log(data[0].passwort);
+                bcrypt.compare(req.body.password, data[0].passwort, (err, isValid) => {
+                    if (isValid) {
+                        let userHighscore = data[0].highscore;
+                        let claimsSet = {
+                            iat: 1475232583813,
+                            name: `${req.body.name}`,
+                            highscore: userHighscore,
+                        };
+                        let token = jwt.sign(claimsSet, "mysecret", {
+                            algorithm: "HS256",
+                            expiresIn: "1h",
+                        });
+                        res.cookie("jwt-token", token);
+                        res.redirect("/game");
+                    }
+                    else {
+                        res.redirect("/users/login");
+                    }
                 });
-                res.cookie("jwt-token", token);
-                res.redirect("/game");
-            }
-            else {
-                res.redirect("/users/login");
             }
         }
         else {
@@ -70,14 +76,22 @@ router.post("/register", (req, res) => {
     db_1.con.query(searchUserQuery, (err, result) => {
         if (!err) {
             if (result[0] == undefined) {
-                let insert = `insert into users(username, passwort, highscore) values ("${req.body.name}","${req.body.password}",0);`;
-                db_1.con.query(insert, (err, data) => {
-                    if (!err) {
-                        res.redirect("/users/login");
-                    }
-                    else {
-                        console.log("fehler beim einfügen des neuen users");
-                    }
+                bcrypt.genSalt(cost, (err, salt) => {
+                    //bcrypt
+                    bcrypt.hash(req.body.password, salt, (err, hash) => {
+                        if (!err) {
+                            console.log(hash);
+                            let insert = `insert into users(username, passwort, highscore) values ("${req.body.name}","${hash}",0);`;
+                            db_1.con.query(insert, (err, data) => {
+                                if (!err) {
+                                    res.redirect("/users/login");
+                                }
+                                else {
+                                    console.log("fehler beim einfügen des neuen users");
+                                }
+                            });
+                        }
+                    });
                 });
             }
             else {

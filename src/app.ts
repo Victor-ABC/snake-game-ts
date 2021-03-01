@@ -6,9 +6,10 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/users";
 import gameRouter from "./routes/game";
-let port = 3000;
 
-let app: Express = express();
+const port = 3000;
+
+const app: Express = express();
 const engineConfig = {
   extname: ".hbs",
   layoutsDir: path.join(__dirname, "views", "layouts"),
