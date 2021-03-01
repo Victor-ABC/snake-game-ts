@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import exphbs from "express-handlebars";
 import * as path from "path";
 import * as jwt from "jsonwebtoken";
 import bodyParser from "body-parser";
@@ -8,6 +9,15 @@ import gameRouter from "./routes/game";
 let port = 3000;
 
 let app: Express = express();
+const engineConfig = {
+  extname: ".hbs",
+  layoutsDir: path.join(__dirname, "views", "layouts"),
+  partialsDir: path.join(__dirname, "views", "partials"),
+  defaultLayout: "main",
+};
+app.engine("hbs", exphbs(engineConfig));
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "hbs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());

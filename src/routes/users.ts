@@ -8,13 +8,7 @@ import * as path from "path";
 const router = express.Router();
 
 router.get("/login", (req, res) => {
-  fs.readFile(path.join(__dirname, "login.html"), "utf-8", (err, data) => {
-    if (!err) {
-      res.send(data);
-    } else {
-      throw new Error("coult not read file error");
-    }
-  });
+  res.render("login");
 });
 
 router.post("/login", (req, res) => {
@@ -44,13 +38,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/register", (req, res) => {
-  fs.readFile(path.join(__dirname, "register.html"), "utf-8", (err, data) => {
-    if (!err) {
-      res.send(data);
-    } else {
-      throw new Error("coult not read file error");
-    }
-  });
+  res.render("register");
 });
 
 router.post("/register", (req, res) => {
@@ -62,7 +50,7 @@ router.post("/register", (req, res) => {
   connection.query(searchUserQuery, (err, result) => {
     if (!err) {
       if (result[0] == undefined) {
-        let insert = `insert into users(username, passwort) values ("${req.body.name}","${req.body.password}");`;
+        let insert = `insert into users(username, passwort, highscore) values ("${req.body.name}","${req.body.password}",0);`;
         connection.query(insert, (err, data) => {
           if (!err) {
             res.redirect("/users/login");

@@ -23,6 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const express_handlebars_1 = __importDefault(require("express-handlebars"));
 const path = __importStar(require("path"));
 const jwt = __importStar(require("jsonwebtoken"));
 const body_parser_1 = __importDefault(require("body-parser"));
@@ -31,6 +32,15 @@ const users_1 = __importDefault(require("./routes/users"));
 const game_1 = __importDefault(require("./routes/game"));
 let port = 3000;
 let app = express_1.default();
+const engineConfig = {
+    extname: ".hbs",
+    layoutsDir: path.join(__dirname, "views", "layouts"),
+    partialsDir: path.join(__dirname, "views", "partials"),
+    defaultLayout: "main",
+};
+app.engine("hbs", express_handlebars_1.default(engineConfig));
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "hbs");
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use(cookie_parser_1.default());

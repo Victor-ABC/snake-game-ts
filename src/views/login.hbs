@@ -1,10 +1,4 @@
-<html>
-  <head>
-    <title>Loginformular</title>
-    <link rel="stylesheet" href="../css/style.css" />
-  </head>
-  <body>
-    <div id="users sign-in">
+<div id="users sign-in">
       <h1>Anmelden</h1>
       <form action="/users/login" method="post">
         <div class="form-group">
@@ -32,10 +26,8 @@
       <p>Noch nicht Registriert?</p>
       <button onclick="relocateRegister()">Registrieren</button>
     </div>
-  </body>
-  <script defer>
-    function relocateRegister() {
-      location.href = "http://localhost:3000/users/register";
-    }
-  </script>
-</html>
+    <script defer>
+      function relocateRegister() {
+        location.href = "http://localhost:3000/users/register";
+      }
+    </script>

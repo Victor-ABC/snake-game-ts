@@ -1,9 +1,3 @@
-<html>
-  <head>
-    <title>Loginformular</title>
-    <link rel="stylesheet" href="../css/style.css" />
-  </head>
-  <body>
     <div class="users sign-up"></div>
       <h1>Konto erstellen</h1>
       <form action="/users/register" method="post">
@@ -41,10 +35,8 @@
       </form>
       <button id="redirectLogin">Login</button>
     </div>
-  </body>
-  <script defer>
-     document.getElementById("redirectLogin").onclick = () => {
-       location.href = "http://localhost:3000/users/login"
-     }
-  </script>
-</html>
+    <script defer>
+      document.getElementById("redirectLogin").onclick = () => {
+        location.href = "http://localhost:3000/users/login"
+      }
+   </script>
