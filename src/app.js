@@ -35,6 +35,9 @@ app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use(cookie_parser_1.default());
 app.use(express_1.default.static(path.join(__dirname, "public")));
+app.get("/", (req, res) => {
+    res.redirect("/users/register");
+});
 app.use("/users", users_1.default);
 app.use((req, res, next) => {
     // token verify

@@ -27,7 +27,7 @@ const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const router = express_1.default.Router();
 router.get("/", (req, res) => {
-    fs.readFile(path.join(__dirname, "..", "public/index.html"), "utf-8", (err, data) => {
+    fs.readFile(path.join(__dirname, "..", "public/game.html"), "utf-8", (err, data) => {
         if (!err) {
             res.send(data);
         }

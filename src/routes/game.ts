@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   fs.readFile(
-    path.join(__dirname, "..", "public/index.html"),
+    path.join(__dirname, "..", "public/game.html"),
     "utf-8",
     (err, data) => {
       if (!err) {
