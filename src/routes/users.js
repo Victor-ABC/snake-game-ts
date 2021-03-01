@@ -36,9 +36,11 @@ router.post("/login", (req, res) => {
     db_1.con.query(searchQuery, (err, data) => {
         if (!err) {
             if (data[0] != undefined) {
+                let userHighscore = data[0].highscore;
                 let claimsSet = {
                     iat: 1475232583813,
                     name: `${req.body.name}`,
+                    highscore: userHighscore,
                 };
                 let token = jwt.sign(claimsSet, "mysecret", {
                     algorithm: "HS256",

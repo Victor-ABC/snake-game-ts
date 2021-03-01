@@ -3,7 +3,6 @@
     <h1 id="Snake">Snake</h1>
     <header id="headerId">
       <button id="start">Start</button>
-      <button id="name">Spieler-Name</button>
       <button id="logout" onclick="signout()">logout</button>
       <h1 id="playerId">Player</h1>
     </header>
@@ -11,7 +10,7 @@
     <div id="gameField">
       <canvas class="canvas tile" width="300" height="300"></canvas>
       <div class="unterCanvas" id="score">0</div>
-      <div class="unterCanvas" id="HighScore">HighScore: 0</div>
+      <div class="unterCanvas" id="HighScore">{{highscore}}</div>
     </div>
     <script src="../ts/events.js" defer></script>
     <script src="../ts/fruit.js"></script>

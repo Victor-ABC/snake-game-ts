@@ -31,12 +31,6 @@ window.document.getElementById("start").onclick = function () {
   setUp();
 };
 
-document.getElementById("name").addEventListener("click", () => {
-  let name = prompt("Hier name Eingeben");
-  document.getElementById("playerId").textContent = name || "player";
-  playerName = name || "player";
-});
-
 function signout() {
   const request = new XMLHttpRequest();
 

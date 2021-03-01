@@ -2,8 +2,6 @@ import express from "express";
 // import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { con as connection } from "../db";
-import * as fs from "fs";
-import * as path from "path";
 
 const router = express.Router();
 
@@ -18,9 +16,11 @@ router.post("/login", (req, res) => {
   connection.query(searchQuery, (err, data) => {
     if (!err) {
       if (data[0] != undefined) {
+        let userHighscore = data[0].highscore;
         let claimsSet = {
           iat: 1475232583813,
           name: `${req.body.name}`,
+          highscore: userHighscore,
         };
         let token = jwt.sign(claimsSet, "mysecret", {
           algorithm: "HS256",
