@@ -39,6 +39,12 @@
         </div>
         <button type="submit" class="btn btn-primary">Konto erstellen</button>
       </form>
+      <button id="redirectLogin">Login</button>
     </div>
   </body>
+  <script defer>
+     document.getElementById("redirectLogin").onclick = () => {
+       location.href = "http://localhost:3000/users/login"
+     }
+  </script>
 </html>

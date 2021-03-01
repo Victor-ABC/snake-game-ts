@@ -48,3 +48,7 @@ function signout() {
   };
   request.send();
 }
+
+function relocateLogin() {
+  location.href = "http://localhost:3000/users/login";
+}

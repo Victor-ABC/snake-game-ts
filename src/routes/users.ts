@@ -71,7 +71,7 @@ router.post("/register", (req, res) => {
           }
         });
       } else {
-        res.redirect("users/register"); // user bereits vorhanden
+        res.redirect("users/register?err=nameAlreadyExists"); // user bereits vorhanden
       }
     } else {
       console.log("Error during search of user");

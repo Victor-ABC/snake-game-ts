@@ -44,7 +44,7 @@ app.use((req, res, next) => {
         next();
     }
     catch (error) {
-        res.redirect("/users/login");
+        res.redirect("/users/register");
     }
 });
 app.use("/game", game_1.default);

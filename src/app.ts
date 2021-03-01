@@ -20,7 +20,7 @@ app.use((req, res, next) => {
     res.locals.user = jwt.verify(token, "mysecret");
     next();
   } catch (error) {
-    res.redirect("/users/login");
+    res.redirect("/users/register");
   }
 });
 app.use("/game", gameRouter);

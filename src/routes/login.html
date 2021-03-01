@@ -28,6 +28,14 @@
         </div>
         <button type="submit" class="btn btn-primary">Anmelden</button>
       </form>
+      <hr />
+      <p>Noch nicht Registriert?</p>
+      <button onclick="relocateRegister()">Registrieren</button>
     </div>
   </body>
+  <script defer>
+    function relocateRegister() {
+      location.href = "http://localhost:3000/users/register";
+    }
+  </script>
 </html>
