@@ -28,18 +28,32 @@ const db_1 = require("../db");
 const router = express_1.default.Router();
 router.get("/", (req, res) => {
     let claimsSet = jwt.verify(req.cookies["jwt-token"], "mysecret");
-    const query = `select coins from users where username like "${claimsSet["name"]}";`;
+    let userName = claimsSet["name"];
+    let query = `select coins from users where username like "${userName}";`;
     db_1.con.query(query, (err, resultset) => {
         if (!err) {
-            res.render("shop", {
-                name: claimsSet["name"].toUpperCase(),
-                coins: resultset[0].coins,
+            const coins = resultset[0].coins;
+            query = `select i.price, i.itemname, case when ui.username is not null then "gekauft"
+      else "nicht gekauft"end as gekauft
+       from
+       items as i left join (
+        select * from users_items where username like "${userName}"
+       ) as ui 
+       on ui.itemname like i.itemname
+       order by i.price;`;
+            db_1.con.query(query, (err, resultset) => {
+                if (!err) {
+                    res.render("shop", {
+                        name: userName,
+                        coins: coins,
+                        items: resultset,
+                    });
+                }
             });
         }
     });
 });
 router.post("/addcoins", (req, res) => {
-    console.log(req.body);
     const query = `update users set coins = coins + ${req.body.coins} where username like "${req.body.name}";`;
     db_1.con.query(query, (err, result) => {
         if (!err) {
@@ -47,6 +61,30 @@ router.post("/addcoins", (req, res) => {
         }
         else {
             console.log(err.message);
+        }
+    });
+});
+router.post("/buy", (req, res) => {
+    let name = req.body.userName;
+    let itemName = req.body.itemName;
+    let price = req.body.price;
+    //1. user coins abziehen
+    //2. produkt hinzufügen
+    let query = `update users set coins = coins - ${price} where username like "${name}";`;
+    db_1.con.query(query, (err, result) => {
+        if (!err) {
+            query = `insert into users_items(username, itemname) values ("${name}", "${itemName}");`;
+            db_1.con.query(query, (err, resultset) => {
+                if (!err) {
+                    res.status(201).end();
+                }
+                else {
+                    console.log("could not insert into users_items");
+                }
+            });
+        }
+        else {
+            console.log("von den coins den preis subtrahieren hat nicht geklappt");
         }
     });
 });

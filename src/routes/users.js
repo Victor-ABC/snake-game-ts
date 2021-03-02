@@ -77,7 +77,6 @@ router.post("/register", (req, res) => {
                     //bcrypt
                     bcrypt.hash(req.body.password, salt, (err, hash) => {
                         if (!err) {
-                            console.log(hash);
                             let insert = `insert into users(username, passwort, highscore, coins) values ("${req.body.name}","${hash}", 0 , 0 );`;
                             db_1.con.query(insert, (err, data) => {
                                 if (!err) {

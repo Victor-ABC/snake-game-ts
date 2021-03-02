@@ -23,6 +23,14 @@ body {
   margin: 0;
 }
 
+.form-group,
+#registerForm {
+  text-align: center;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid var(--fg-1);
+}
+
 body {
   display: flex;
   flex-flow: column nowrap;
@@ -62,13 +70,29 @@ header > button {
   border: 1px solid var(--fg-1);
   box-shadow: 2px 2px 1px rgb(177, 135, 201);
 }
+td > button {
+  display: block;
+  height: 30px;
+  min-width: 50px;
+  font-weight: 300;
+  padding: 3px 9px;
+  margin-left: 4px;
+  font-size: 14px;
+  font-family: "Courier New", Courier, monospace;
+  color: var(--fg-1);
+  background: none;
+  border: 1px solid var(--fg-1);
+  box-shadow: 2px 2px 1px rgb(177, 135, 201);
+}
 
-header button:hover {
+header button:hover,
+td > button:hover {
   color: var(--fg-2);
   border: 1px solid var(--fg-3);
 }
 
-header button:active {
+header button:active,
+td > button:active {
   box-shadow: none;
   margin: 9px 8px 0px 4px;
   box-shadow: -1px -1px 1px rgb(76, 61, 85);
@@ -134,19 +158,19 @@ td {
 #tableScore {
   width: 20%;
 }
-body tbody tr:first-child {
+body #weltScoreBoard tbody tr:first-child {
   background-color: gold;
   color: black;
 }
-body tbody tr:nth-child(2) {
+body #weltScoreBoard tbody tr:nth-child(2) {
   background-color: silver;
   color: black;
 }
-body tbody tr:nth-child(3) {
+body #weltScoreBoard tbody tr:nth-child(3) {
   background-color: #bf8970;
   color: black;
 }
-body tbody tr:nth-child(3) ~ tr {
+body #weltScoreBoard tbody tr:nth-child(3) ~ tr {
   background-color: white;
   color: black;
 }

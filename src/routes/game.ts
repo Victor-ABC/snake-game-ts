@@ -8,13 +8,20 @@ router.get("/", (req, res) => {
   let claimsSet: any = jwt.verify(req.cookies["jwt-token"], "mysecret");
   connection.query(
     "select username as name, highscore as score from users order by highscore desc limit 10;",
-    (err, resultset) => {
+    (err, resultsetScoreboard) => {
       if (!err) {
-        res.render("game", {
-          highscore: claimsSet["highscore"],
-          player: claimsSet["name"],
-          champion: resultset,
-        });
+        connection.query(
+          `select highscore from users where username like "${claimsSet["name"]}";`,
+          (err, resultSetHighscore) => {
+            if (!err) {
+              res.render("game", {
+                highscore: resultSetHighscore[0].highscore,
+                player: claimsSet["name"],
+                champion: resultsetScoreboard,
+              });
+            }
+          }
+        );
       }
     }
   );
@@ -24,14 +31,8 @@ router.post("/", (req, res) => {
     `update users set highscore=${req.body.highscore} where username like "${req.body.name}";`,
     (err, data) => {
       if (!err) {
-        console.log(
-          `User: ${req.body.name} has a new highscore(${req.body.highscore})`
-        );
         res.status(201).send();
       } else {
-        console.log(
-          `Error, User: ${req.body.name} with new highscore(${req.body.highscore}) coult not been updated`
-        );
       }
     }
   );

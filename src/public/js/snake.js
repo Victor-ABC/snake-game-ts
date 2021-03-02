@@ -134,7 +134,6 @@ function printGameOver() {
   setTimeout(() => {
     gameOver.remove();
   }, 2000);
-  document.getElementById("start").textContent = "restart";
   //Sound
   this.snakeMusic.pause();
   this.deadSound = new Audio("../media/snakeDead.wav");

@@ -28,12 +28,16 @@ const db_1 = require("../db");
 const router = express_1.default.Router();
 router.get("/", (req, res) => {
     let claimsSet = jwt.verify(req.cookies["jwt-token"], "mysecret");
-    db_1.con.query("select username as name, highscore as score from users order by highscore desc limit 10;", (err, resultset) => {
+    db_1.con.query("select username as name, highscore as score from users order by highscore desc limit 10;", (err, resultsetScoreboard) => {
         if (!err) {
-            res.render("game", {
-                highscore: claimsSet["highscore"],
-                player: claimsSet["name"],
-                champion: resultset,
+            db_1.con.query(`select highscore from users where username like "${claimsSet["name"]}";`, (err, resultSetHighscore) => {
+                if (!err) {
+                    res.render("game", {
+                        highscore: resultSetHighscore[0].highscore,
+                        player: claimsSet["name"],
+                        champion: resultsetScoreboard,
+                    });
+                }
             });
         }
     });
@@ -41,11 +45,9 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
     db_1.con.query(`update users set highscore=${req.body.highscore} where username like "${req.body.name}";`, (err, data) => {
         if (!err) {
-            console.log(`User: ${req.body.name} has a new highscore(${req.body.highscore})`);
             res.status(201).send();
         }
         else {
-            console.log(`Error, User: ${req.body.name} with new highscore(${req.body.highscore}) coult not been updated`);
         }
     });
 });

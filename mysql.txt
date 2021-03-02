@@ -1,5 +1,37 @@
 create table users(
 	username varchar(255) not null primary key,
     passwort varchar(255) not null,
-    highscore int
+    highscore int,
+    coins int
 );
+
+create table items(
+	price int not null,
+    itemname varchar(255) not null primary key
+);
+
+create table users_items(
+    username varchar(255),
+    itemname varchar(255),
+    primary key( username , itemname ),
+    foreign key (username) references users(username),
+    foreign key (itemname) references items(itemname)
+)
+
+//gekaufte items pro user
+
+select i.price, i.itemname, case when ui.username is not null then "gekauft"
+else "nicht gekauft"end as gekauft
+ from
+ items as i left join (
+	select * from users_items where username like "victor"
+ ) as ui 
+ on ui.itemname like i.itemname
+ order by i.price;
+
+insert into items(price, itemname) values
+(100,"rot"),
+(100,"blau"),
+(100,"gelb"),
+(200,"weiß"),
+(500,"regenbogen");

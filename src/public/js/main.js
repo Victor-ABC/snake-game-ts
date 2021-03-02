@@ -34,8 +34,7 @@ var highScore = 0;
 var snake;
 var fruit;
 var i;
-var snakeMusic;
-
+var snakeMusic = new Audio("../media/snakeGameMusic.mp3");
 function setUp() {
   if (!isOn) {
     isOn = true;
@@ -45,7 +44,6 @@ function setUp() {
     fruit.setRandomLocation(canvas);
 
     //GameMusic
-    snakeMusic = new Audio("../media/snakeGameMusic.mp3");
     snakeMusic.play();
 
     i = setInterval(() => {

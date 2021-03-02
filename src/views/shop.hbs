@@ -1,13 +1,59 @@
 <h1>Shop</h1>
 <img src="media/tresure.png" alt="tresure" width="200" height="200">
-<p>Herzlich Willkommen {{name}}</p>
+<p>Herzlich Willkommen <p id="playername">{{name}}</p></p>
 <header style="text-align: left; margin: 20px; padding: 5px">
     <button id="backToTheGame">Zurück zum Spiel</button>
     <img src="media/coin.jpg" alt="coinPicture" width="20" height="20">
     <p style="float: inline-start;">{{coins}} Coins</p>
+    <p id="coins" style="visibility: hidden">{{coins}}</p>
 </header>
+<table id="i">
+      <thead>
+        <tr>
+            <th>Price</th>
+            <th>Name</th>
+            <th>Gekauft</th>
+        </tr>
+        </thead>
+            <caption>Items</caption>
+        <tbody>
+        {{#each items}}
+          <tr>
+              <td id="{{itemname}}">{{price}}</td>
+              <td id="item">
+                <button class="item-class">{{itemname}}</button>
+              </td>
+              <td id="{{itemname}}-gekauft">{{gekauft}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
 <script defer>
     document.getElementById("backToTheGame").onclick = () => {
         location.href = "http://localhost:3000/game";
     }
+    document.querySelectorAll("td > button").forEach( (button) => {
+      button.onclick = () => {
+          const itemName = button.textContent;
+          const price = document.getElementById(`${itemName}`).textContent;
+          const userName = document.getElementById("playername").textContent;
+          const amountCoins = document.getElementById("coins").textContent;
+          const isGekauft = document.getElementById(`${itemName}-gekauft`).textContent;
+          if((amountCoins >= price)&(isGekauft === "nicht gekauft" )) {
+            alert(`myMoney: ${amountCoins} and price: ${price}`);
+            let data = { itemName: itemName, userName: userName, price : price };
+            let request = new XMLHttpRequest();
+            request.open("POST", "http://localhost:3000/shop/buy", true);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.onload = event => {
+            if (request.status === 201) {
+              window.location.assign('/shop');
+              }
+            };
+            request.send(JSON.stringify(data));
+          } else {
+            alert("Du hast nicht genug coins um das zu kaufen")
+          }
+      }
+    })
 </script>

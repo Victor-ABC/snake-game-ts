@@ -1,6 +1,6 @@
 <div id="users sign-in">
       <h1>Anmelden</h1>
-      <form action="/users/login" method="post">
+      <form id="registerForm" action="/users/login" method="post">
         <div class="form-group">
           <label for="name" class="control-label">Name</label>
           <input
@@ -22,9 +22,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Anmelden</button>
       </form>
-      <hr />
+      <div style="text-align: center; margin:10px">
       <p>Noch nicht Registriert?</p>
-      <button onclick="relocateRegister()">Registrieren</button>
+      <button onclick="relocateRegister()"  class="btn">Registrieren</button>
+      </div>
     </div>
     <script defer>
       function relocateRegister() {
