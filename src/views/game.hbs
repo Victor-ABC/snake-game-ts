@@ -8,6 +8,13 @@
       <button id="weltListeButton">Weltrangliste</button>
       <button id="shop">Shop</button>
       <h1 id="playerId">{{player}}</h1>
+      <select id="color-select">
+        <option class="item-class">green</option>
+         {{#each items}}
+          <option class="item-class" value="{{item}}">{{item}}</option>
+        {{/each}}
+      </select>
+      <p id="farbe" style="visibility: hidden;">{{farbe}}</p>
     </header>
     <hr id="hr" />
     <div id="gameField">
@@ -29,3 +36,10 @@
     <script type="text/javascript" src="../js/snake.js"></script>
     <script type="text/javascript" src="../js/canvas.js"></script>
     <script type="text/javascript" src="../js/main.js"></script>
+    <script defer>
+      globalColor = document.getElementById("farbe").textContent;
+      document.getElementById("color-select").onchange = (e) => {
+        globalColor = e.originalTarget.value;
+        document.getElementById("farbe").textContent = globalColor;
+      }
+    </script>

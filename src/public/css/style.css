@@ -22,6 +22,10 @@ body {
   height: 100%;
   margin: 0;
 }
+.select-item {
+  padding: 5px;
+  border: 1px solid var(--fg-1);
+}
 
 .form-group,
 #registerForm {
@@ -70,7 +74,8 @@ header > button {
   border: 1px solid var(--fg-1);
   box-shadow: 2px 2px 1px rgb(177, 135, 201);
 }
-td > button {
+td > button,
+input[type="submit"] {
   display: block;
   height: 30px;
   min-width: 50px;
@@ -83,6 +88,22 @@ td > button {
   background: none;
   border: 1px solid var(--fg-1);
   box-shadow: 2px 2px 1px rgb(177, 135, 201);
+}
+#color-select {
+  float: right;
+  display: block;
+  height: 30px;
+  min-width: 50px;
+  font-weight: 300;
+  padding: 3px 9px;
+  margin-left: 4px;
+  font-size: 14px;
+  font-family: "Courier New", Courier, monospace;
+  color: var(--fg-1);
+  background: none;
+  border: 1px solid var(--fg-1);
+  box-shadow: 2px 2px 1px rgb(177, 135, 201);
+  background-color: black;
 }
 
 header button:hover,

@@ -2,7 +2,8 @@ create table users(
 	username varchar(255) not null primary key,
     passwort varchar(255) not null,
     highscore int,
-    coins int
+    coins int,
+    farbe varchar(255)
 );
 
 create table items(

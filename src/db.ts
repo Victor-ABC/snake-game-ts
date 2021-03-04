@@ -1,6 +1,6 @@
 import mysql from "mysql";
 
-var con = mysql.createConnection({
+var con: mysql.Connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "a345snake",

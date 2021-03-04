@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/users";
 import gameRouter from "./routes/game";
 import shopRouter from "./routes/shop";
+import bagRouter from "./routes/bag";
 
 const port = 3000;
 
@@ -40,6 +41,7 @@ app.use((req, res, next) => {
 });
 app.use("/shop", shopRouter);
 app.use("/game", gameRouter);
+app.use("/bag", bagRouter);
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });

@@ -35,25 +35,19 @@
     document.querySelectorAll("td > button").forEach( (button) => {
       button.onclick = () => {
           const itemName = button.textContent;
-          const price = document.getElementById(`${itemName}`).textContent;
-          const userName = document.getElementById("playername").textContent;
-          const amountCoins = document.getElementById("coins").textContent;
-          const isGekauft = document.getElementById(`${itemName}-gekauft`).textContent;
-          if((amountCoins >= price)&(isGekauft === "nicht gekauft" )) {
-            alert(`myMoney: ${amountCoins} and price: ${price}`);
-            let data = { itemName: itemName, userName: userName, price : price };
-            let request = new XMLHttpRequest();
-            request.open("POST", "http://localhost:3000/shop/buy", true);
-            request.setRequestHeader("Content-Type", "application/json");
-            request.onload = event => {
+          let data = { itemName: itemName };
+          let request = new XMLHttpRequest();
+          request.open("POST", "http://localhost:3000/shop/buy", true);
+          request.setRequestHeader("Content-Type", "application/json");
+          request.onload = event => {
             if (request.status === 201) {
               window.location.assign('/shop');
-              }
-            };
-            request.send(JSON.stringify(data));
-          } else {
-            alert("Du hast nicht genug coins um das zu kaufen")
-          }
+            }
+            else if (request.status === 202) {
+                  // Print nicht genug geld
+            }
+          };
+          request.send(JSON.stringify(data));
       }
     })
 </script>

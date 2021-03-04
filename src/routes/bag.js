@@ -29,51 +29,21 @@ const shop_1 = require("./shop");
 const router = express_1.default.Router();
 router.get("/", (req, res) => {
     let claimsSet = jwt.verify(req.cookies["jwt-token"], "mysecret");
-    let name = claimsSet["name"];
-    let champion;
-    let items;
-    shop_1.queryPromise(`select itemname as item from users_items where username like "${name}";
-  `, db_1.con)
-        .then((result) => {
-        if (result) {
-            items = result;
-            return shop_1.queryPromise(`select username as name, highscore as score from users order by highscore desc limit 10;`, db_1.con);
+    let userName = claimsSet["name"];
+    db_1.con.query(`select itemname as item from users_items where username like "${userName}";`, (err, resultset) => {
+        if (!err) {
+            res.render("bag", { items: resultset, username: userName });
         }
         else {
-            console.log("coult not load items of user");
-        }
-    })
-        .then((result) => {
-        if (result) {
-            champion = result;
-            return shop_1.queryPromise(`select highscore , farbe from users where username like "${name}";`, db_1.con);
-        }
-        else {
-            throw new Error("could not lead scorebord (GlobalScores) ");
-        }
-    })
-        .then((result) => {
-        if (result) {
-            res.render("game", {
-                highscore: result[0].highscore,
-                player: name,
-                champion: champion,
-                farbe: result[0].farbe,
-                items: items,
-            });
-        }
-        else {
-            throw new Error("could not load highscore");
+            res.status(404).end();
         }
     });
 });
-router.post("/", (req, res) => {
-    db_1.con.query(`update users set highscore=${req.body.highscore} where username like "${req.body.name}";`, (err, data) => {
-        if (!err) {
-            res.status(201).send();
-        }
-        else {
-        }
+router.post("/color", (req, res) => {
+    console.log("post at /color");
+    shop_1.queryPromise(`select itemname as item from items;`, db_1.con).then((result) => {
+        console.log(req.body);
+        res.redirect("/bag");
     });
 });
 exports.default = router;

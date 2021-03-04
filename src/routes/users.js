@@ -26,6 +26,7 @@ const express_1 = __importDefault(require("express"));
 const bcrypt = __importStar(require("bcryptjs"));
 const jwt = __importStar(require("jsonwebtoken"));
 const db_1 = require("../db");
+const shop_1 = require("./shop");
 const cost = 10;
 const router = express_1.default.Router();
 router.get("/login", (req, res) => {
@@ -64,39 +65,71 @@ router.post("/login", (req, res) => {
 router.get("/register", (req, res) => {
     res.render("register");
 });
+// router.post("/register", (req, res) => {
+//   if (req.body.password !== req.body.passwordCheck) {
+//     res.redirect("/users/register");
+//     return;
+//   }
+//   let searchUserQuery = `select * from users where username like "${req.body.name}";`;
+//   connection.query(searchUserQuery, (err, result) => {
+//     if (!err) {
+//       if (result[0] == undefined) {
+//         bcrypt.genSalt(cost, (err, salt) => {
+//           //bcrypt
+//           bcrypt.hash(req.body.password, salt, (err, hash) => {
+//             if (!err) {
+//               let insert = `insert into users(username, passwort, highscore, coins, farbe) values ("${req.body.name}","${hash}", 0 , 0 , "green" );`;
+//               connection.query(insert, (err, data) => {
+//                 if (!err) {
+//                   res.redirect("/users/login");
+//                 } else {
+//                   console.log("fehler beim einfügen des neuen users");
+//                 }
+//               });
+//             }
+//           });
+//         });
+//       } else {
+//         res.redirect("users/register?err=nameAlreadyExists"); // user bereits vorhanden
+//       }
+//     } else {
+//       console.log("Error during search of user");
+//     }
+//   });
+// });
 router.post("/register", (req, res) => {
     if (req.body.password !== req.body.passwordCheck) {
         res.redirect("/users/register");
         return;
     }
-    let searchUserQuery = `select * from users where username like "${req.body.name}";`;
-    db_1.con.query(searchUserQuery, (err, result) => {
-        if (!err) {
-            if (result[0] == undefined) {
-                bcrypt.genSalt(cost, (err, salt) => {
-                    //bcrypt
-                    bcrypt.hash(req.body.password, salt, (err, hash) => {
-                        if (!err) {
-                            let insert = `insert into users(username, passwort, highscore, coins) values ("${req.body.name}","${hash}", 0 , 0 );`;
-                            db_1.con.query(insert, (err, data) => {
-                                if (!err) {
-                                    res.redirect("/users/login");
-                                }
-                                else {
-                                    console.log("fehler beim einfügen des neuen users");
-                                }
-                            });
-                        }
-                    });
+    shop_1.queryPromise(`select * from users where username like "${req.body.name}";`, db_1.con)
+        .then((result) => {
+        if (result[0] == undefined) {
+            bcrypt.genSalt(cost, (err, salt) => {
+                bcrypt.hash(req.body.password, salt, (err, hash) => {
+                    if (!err) {
+                        // let insert = `insert into users(username, passwort, highscore, coins, farbe) values ("${req.body.name}","${hash}", 0 , 0 , "green" );`;
+                        // connection.query(insert, (err, data) => {
+                        //   if (!err) {
+                        //     res.redirect("/users/login");
+                        //   } else {
+                        //     console.log("fehler beim einfügen des neuen users");
+                        //   }
+                        // });
+                        return shop_1.queryPromise(` insert into users(username, passwort, highscore, coins, farbe) values ("${req.body.name}","${hash}", 0 , 0 , "green" );`, db_1.con);
+                    }
                 });
-            }
-            else {
-                res.redirect("users/register?err=nameAlreadyExists"); // user bereits vorhanden
-            }
+            });
         }
         else {
-            console.log("Error during search of user");
+            console.log("user altready exists");
         }
+    })
+        .then(() => {
+        res.redirect("/users/login");
+    })
+        .catch((err) => {
+        console.log(err);
     });
 });
 router.delete("/signout", (req, res) => {

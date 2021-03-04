@@ -38,7 +38,7 @@ function Snake(scale) {
     }
   };
   this.draw = function (canvas) {
-    canvas.draw(this.x, this.y, "rgb(0, 255, 0)"); //Kopf
+    canvas.draw(this.x, this.y, globalColor); //Kopf
     for (let i = 0; i < this.tail; i++) {
       this.tailElems[i].drawTailElement(canvas);
     }

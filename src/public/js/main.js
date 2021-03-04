@@ -29,6 +29,7 @@ var rgbVerlauf = [
   "rgb(102, 204, 0)",
   "rgb(51, 204, 0)",
 ];
+var globalColor;
 var score = 0;
 var highScore = 0;
 var snake;
@@ -56,7 +57,8 @@ function setUp() {
         snake.addTailElement(
           undefined,
           undefined,
-          rgbVerlauf[rgbVerlaufIndex % rgbVerlauf.length],
+          // rgbVerlauf[rgbVerlaufIndex % rgbVerlauf.length],
+          globalColor,
           fruit.color
         );
         rgbVerlaufIndex++;

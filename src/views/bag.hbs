@@ -1,0 +1,20 @@
+    <h1 id="Snake">Snake</h1>
+    <img src="media/snake.png" alt="tresure" width="100" height="100">
+    <header id="headerId">
+      <button onclick="location.assign('/game')">Game</button>
+      <h1 id="playerId">{{username}}</h1>
+    </header>
+    <hr id="hr" />
+    <form action="/bag/color" method="POST">
+    <fieldset>
+    <legend>Snake-Farbe</legend>
+    {{#each items}}
+        <label for="{{item}}">Farbe: {{item}}</label>
+        <input type="radio" id="{{item}}" name="{{item}}">
+        <br>
+    {{/each}}
+    <div style="margin: 10px;">
+    <input type="submit" value="Speichern">
+    </div>
+  </fieldset>
+</form> 

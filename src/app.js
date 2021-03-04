@@ -31,6 +31,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const users_1 = __importDefault(require("./routes/users"));
 const game_1 = __importDefault(require("./routes/game"));
 const shop_1 = __importDefault(require("./routes/shop"));
+const bag_1 = __importDefault(require("./routes/bag"));
 const port = 3000;
 const app = express_1.default();
 const engineConfig = {
@@ -63,6 +64,7 @@ app.use((req, res, next) => {
 });
 app.use("/shop", shop_1.default);
 app.use("/game", game_1.default);
+app.use("/bag", bag_1.default);
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`);
 });
