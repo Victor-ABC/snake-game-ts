@@ -1,43 +1,19 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const jwt = __importStar(require("jsonwebtoken"));
-const db_1 = require("../db");
-const shop_1 = require("./shop");
-const router = express_1.default.Router();
+import express from "express";
+import * as jwt from "jsonwebtoken";
+import { con as connection } from "../db";
+import { queryPromise } from "./shop";
+const router = express.Router();
 router.get("/", (req, res) => {
     let claimsSet = jwt.verify(req.cookies["jwt-token"], "mysecret");
     let name = claimsSet["name"];
     let champion;
     let items;
-    shop_1.queryPromise(`select itemname as item from users_items where username like "${name}";
-  `, db_1.con)
+    queryPromise(`select itemname as item from users_items where username like "${name}";
+  `, connection)
         .then((result) => {
         if (result) {
             items = result;
-            return shop_1.queryPromise(`select username as name, highscore as score from users order by highscore desc limit 10;`, db_1.con);
+            return queryPromise(`select username as name, highscore as score from users order by highscore desc limit 10;`, connection);
         }
         else {
             console.log("coult not load items of user");
@@ -46,7 +22,7 @@ router.get("/", (req, res) => {
         .then((result) => {
         if (result) {
             champion = result;
-            return shop_1.queryPromise(`select highscore , farbe from users where username like "${name}";`, db_1.con);
+            return queryPromise(`select highscore , farbe from users where username like "${name}";`, connection);
         }
         else {
             throw new Error("could not lead scorebord (GlobalScores) ");
@@ -68,7 +44,7 @@ router.get("/", (req, res) => {
     });
 });
 router.post("/", (req, res) => {
-    db_1.con.query(`update users set highscore=${req.body.highscore} where username like "${req.body.name}";`, (err, data) => {
+    connection.query(`update users set highscore=${req.body.highscore} where username like "${req.body.name}";`, (err, data) => {
         if (!err) {
             res.status(201).send();
         }
@@ -76,4 +52,4 @@ router.post("/", (req, res) => {
         }
     });
 });
-exports.default = router;
+export default router;

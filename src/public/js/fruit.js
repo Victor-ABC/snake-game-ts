@@ -1,36 +1,29 @@
-function Fruit() {
-  this.colorArray = ["red", "blue", "yellow", "purple"];
-  this.x;
-  this.y;
-  this.color;
-  this.setRandomColor = function () {
-    this.color = this.colorArray[
-      Math.floor(Math.random() * this.colorArray.length)
-    ];
-  };
-  this.setRandomLocation = function (canvas) {
-    this.x = Math.floor((Math.random() * canvas.canvas.width) / 10) * 10;
-    this.y = Math.floor((Math.random() * canvas.canvas.height) / 10) * 10;
-    // Check if it spawned in snake
-    // Snake head
-    if (this.x === snake.x && this.y === snake.y) {
-      console.log("neu berechnet");
-      this.setRandomLocation(canvas);
+export class Fruit {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+        this.colorArray = ["red", "blue", "yellow", "purple"];
+        this.color = "green";
     }
-    // Snake Before Head
-    if (this.x === snake.x + snake.moveX && this.y === snake.y + snake.moveY) {
-      console.log("neu berechnet");
-      this.setRandomLocation(canvas);
+    setRandomColor() {
+        this.color = this.colorArray[Math.floor(Math.random() * this.colorArray.length)];
     }
-    // Snake tail check
-    for (let i = 0; i < snake.tailElems.length; i++) {
-      if (this.x === snake.tailElems[i].x && this.y === snake.tailElems[i].y) {
-        console.log("neu berechnet");
-        this.setRandomLocation(canvas);
-      }
+    setRandomLocation(canvas, snake) {
+        this.x = Math.floor((Math.random() * canvas.getWidth()) / 10) * 10;
+        this.y = Math.floor((Math.random() * canvas.getHeight()) / 10) * 10;
+        // Check if it spawned in snake
+        if (!snake.fruitPlacedSuccessfully(this.x, this.y)) {
+            // Snake head
+            this.setRandomLocation(canvas, snake);
+        }
     }
-  };
-  this.draw = function (canvas) {
-    canvas.draw(this.x, this.y, this.color);
-  };
+    draw(canvas) {
+        canvas.draw(this.y, this.y, this.color);
+    }
+    getX() {
+        return this.x;
+    }
+    getY() {
+        return this.y;
+    }
 }

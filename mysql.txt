@@ -31,8 +31,8 @@ else "nicht gekauft"end as gekauft
  order by i.price;
 
 insert into items(price, itemname) values
-(100,"rot"),
-(100,"blau"),
-(100,"gelb"),
-(200,"weiß"),
+(100,"red"),
+(100,"blue"),
+(100,"yellow"),
+(200,"white"),
 (500,"regenbogen");

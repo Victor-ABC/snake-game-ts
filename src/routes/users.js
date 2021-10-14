@@ -1,40 +1,16 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const bcrypt = __importStar(require("bcryptjs"));
-const jwt = __importStar(require("jsonwebtoken"));
-const db_1 = require("../db");
-const shop_1 = require("./shop");
+import express from "express";
+import * as bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
+import { con as connection } from "../db";
+import { queryPromise } from "./shop";
 const cost = 10;
-const router = express_1.default.Router();
+const router = express.Router();
 router.get("/login", (req, res) => {
     res.render("login");
 });
 router.post("/login", (req, res) => {
     res.clearCookie("jwt-token");
-    db_1.con.query(`select * from users where username like "${req.body.name}";`, (err, resultset) => {
+    connection.query(`select * from users where username like "${req.body.name}";`, (err, resultset) => {
         if (!err) {
             if (resultset[0] != undefined) {
                 bcrypt.compare(req.body.password, resultset[0].passwort, (err, isValid) => {
@@ -102,7 +78,7 @@ router.post("/register", (req, res) => {
         res.redirect("/users/register");
         return;
     }
-    shop_1.queryPromise(`select * from users where username like "${req.body.name}";`, db_1.con)
+    queryPromise(`select * from users where username like "${req.body.name}";`, connection)
         .then((result) => {
         if (result[0] == undefined) {
             bcrypt.genSalt(cost, (err, salt) => {
@@ -116,7 +92,7 @@ router.post("/register", (req, res) => {
                         //     console.log("fehler beim einfügen des neuen users");
                         //   }
                         // });
-                        return shop_1.queryPromise(` insert into users(username, passwort, highscore, coins, farbe) values ("${req.body.name}","${hash}", 0 , 0 , "green" );`, db_1.con);
+                        return queryPromise(` insert into users(username, passwort, highscore, coins, farbe) values ("${req.body.name}","${hash}", 0 , 0 , "green" );`, connection);
                     }
                 });
             });
@@ -136,4 +112,4 @@ router.delete("/signout", (req, res) => {
     res.clearCookie("jwt-token");
     res.status(200).end();
 });
-exports.default = router;
+export default router;

@@ -1,37 +1,12 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.queryPromise = void 0;
-const express_1 = __importDefault(require("express"));
-const jwt = __importStar(require("jsonwebtoken"));
-const db_1 = require("../db");
-const router = express_1.default.Router();
+import express from "express";
+import * as jwt from "jsonwebtoken";
+import { con as connection } from "../db";
+const router = express.Router();
 router.get("/", (req, res) => {
     let claimsSet = jwt.verify(req.cookies["jwt-token"], "mysecret");
     let userName = claimsSet["name"];
     let query = `select coins from users where username like "${userName}";`;
-    db_1.con.query(query, (err, resultset) => {
+    connection.query(query, (err, resultset) => {
         if (!err) {
             const coins = resultset[0].coins;
             query = `select i.price, i.itemname, case when ui.username is not null then "gekauft"
@@ -42,7 +17,7 @@ router.get("/", (req, res) => {
        ) as ui 
        on ui.itemname like i.itemname
        order by i.price;`;
-            db_1.con.query(query, (err, resultset) => {
+            connection.query(query, (err, resultset) => {
                 if (!err) {
                     res.render("shop", {
                         name: userName,
@@ -56,7 +31,7 @@ router.get("/", (req, res) => {
 });
 router.post("/addcoins", (req, res) => {
     const query = `update users set coins = coins + ${req.body.coins} where username like "${req.body.name}";`;
-    db_1.con.query(query, (err, result) => {
+    connection.query(query, (err, result) => {
         if (!err) {
             res.status(201).send();
         }
@@ -75,10 +50,10 @@ router.post("/buy", (req, res) => {
     let userName = claimsSet["name"];
     let itemName = req.body.itemName;
     let price;
-    queryPromise(`select * from users_items where username like "${userName}" and itemname like "${itemName}";`, db_1.con)
+    queryPromise(`select * from users_items where username like "${userName}" and itemname like "${itemName}";`, connection)
         .then((result) => {
         if (result[0] === undefined) {
-            return queryPromise(`select price from items where items.itemname like "${itemName}";`, db_1.con);
+            return queryPromise(`select price from items where items.itemname like "${itemName}";`, connection);
         }
         else {
             throw new Error(`user ${userName} already bought ${itemName}`);
@@ -87,7 +62,7 @@ router.post("/buy", (req, res) => {
         .then((result) => {
         if (result) {
             price = result[0].price;
-            return queryPromise(`select coins from users where username like "${userName}";`, db_1.con);
+            return queryPromise(`select coins from users where username like "${userName}";`, connection);
         }
         else {
             throw new Error(`could not find price for ${itemName}`);
@@ -99,7 +74,7 @@ router.post("/buy", (req, res) => {
             if (coins >= price) {
                 return queryPromise(`insert into users_items(username, itemname)
              values
-            ("${userName}" , "${itemName}");`, db_1.con);
+            ("${userName}" , "${itemName}");`, connection);
             }
             else {
                 throw new Error(`User(coins = ${coins}) does not have enough money for ${itemName}: price = ${price}`);
@@ -112,7 +87,7 @@ router.post("/buy", (req, res) => {
         .then((result) => {
         return queryPromise(`update users 
         set coins = coins - ${price} 
-        where username like "${userName}";`, db_1.con);
+        where username like "${userName}";`, connection);
     })
         .then(() => {
         res.status(201).send();
@@ -121,7 +96,7 @@ router.post("/buy", (req, res) => {
         console.log(err);
     });
 });
-function queryPromise(query, connection) {
+export function queryPromise(query, connection) {
     return new Promise((resolve, reject) => {
         connection.query(query, (err, resultset) => {
             if (!err) {
@@ -133,5 +108,4 @@ function queryPromise(query, connection) {
         });
     });
 }
-exports.queryPromise = queryPromise;
-exports.default = router;
+export default router;
